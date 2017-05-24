@@ -1,0 +1,11 @@
+{
+    "name": "Блокировка рекламы VK",
+    "version": "0.0.1",
+    "description": "Расширение блокирует рекламный блок в левой части страницы VK",
+    "permissions": ["tabs"],
+	"manifest_version": 2,
+    "content_scripts": [ {
+      "matches": ["https://vk.com/*"],
+      "js": ["background.js"]
+   } ]
+}
