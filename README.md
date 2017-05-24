@@ -6,6 +6,6 @@
 Расширение состоит из одной строки на JavaScript и файла manifest.
 
 Как написать свое расширение для хрома и как его установить
-goo.gl/0kaoHqcontent_copyCopy short URL
+https://goo.gl/0kaoHq
 
 
