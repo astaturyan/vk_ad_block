@@ -86,8 +86,11 @@ else
 fi
 
 # ── Backup + patch nginx config ─────────
+# Keep backups OUTSIDE sites-enabled — nginx loads every file in there.
+BACKUP_DIR="/root/nginx-backups"
+mkdir -p "$BACKUP_DIR"
 TIMESTAMP=$(date +%Y%m%d-%H%M%S)
-BACKUP="${NGINX_DEFAULT}.bak.${TIMESTAMP}"
+BACKUP="$BACKUP_DIR/default.${TIMESTAMP}"
 cp -a "$NGINX_DEFAULT" "$BACKUP"
 echo "✓ Backed up nginx → $BACKUP"
 
