@@ -36,8 +36,8 @@ let refreshTimer, tickTimer;
 async function fetchAll() {
   try {
     const [r1, r2] = await Promise.all([
-      fetch('/api/arrivals').then(r => r.json()),
-      fetch('/api/alerts').then(r => r.json()),
+      fetch('api/arrivals').then(r => r.json()),
+      fetch('api/alerts').then(r => r.json()),
     ]);
     if (r1.ok) { allData = r1.data; setUpdated(r1.ts); }
     if (r2.ok) { allAlerts = r2.alerts; renderAlerts(); }
