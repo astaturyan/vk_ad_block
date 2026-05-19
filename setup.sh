@@ -1,6 +1,6 @@
 #!/bin/bash
 # MTA Subway Tracker — safe deploy on existing nginx server.
-# Adds a /mta/ location to the default site without touching existing config.
+# Adds a dedicated nginx server block for /mta/ — does not touch existing configs.
 
 set -euo pipefail
 
@@ -12,7 +12,9 @@ PORT=3001
 HTPASSWD="/etc/nginx/.htpasswd-mta"
 AUTH_USER="mta"
 AUTH_PASS="Q1Ml9BoH"
-NGINX_DEFAULT="/etc/nginx/sites-enabled/default"
+NGINX_SITE="/etc/nginx/sites-available/mta-tracker"
+NGINX_LINK="/etc/nginx/sites-enabled/mta-tracker"
+SERVER_IP=$(hostname -I | awk '{print $1}')
 
 echo ""
 echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
@@ -85,96 +87,36 @@ else
   exit 1
 fi
 
-# ── Backup + patch nginx config ─────────
-# Keep backups OUTSIDE sites-enabled — nginx loads every file in there.
-BACKUP_DIR="/root/nginx-backups"
-mkdir -p "$BACKUP_DIR"
-TIMESTAMP=$(date +%Y%m%d-%H%M%S)
-BACKUP="$BACKUP_DIR/default.${TIMESTAMP}"
-cp -a "$NGINX_DEFAULT" "$BACKUP"
-echo "✓ Backed up nginx → $BACKUP"
+# ── Standalone nginx server block ───────
+# Matches Host: <SERVER_IP> on port 80 — does not conflict with the existing
+# default_server (which keeps serving its own server_name).
+cat > "$NGINX_SITE" <<NGINX
+server {
+    listen 80;
+    listen [::]:80;
+    server_name $SERVER_IP;
 
-python3 - "$NGINX_DEFAULT" "$HTPASSWD" "$PORT" <<'PY'
-import sys, re, pathlib
-
-path, htpasswd, port = sys.argv[1], sys.argv[2], sys.argv[3]
-text = pathlib.Path(path).read_text()
-
-START = "    # >>> MTA-TRACKER START >>>"
-END   = "    # <<< MTA-TRACKER END <<<"
-
-# Wipe any prior MTA block (so re-runs are safe)
-text = re.sub(
-    r'[ \t]*# >>> MTA-TRACKER START >>>.*?# <<< MTA-TRACKER END <<<\n?',
-    '', text, flags=re.DOTALL
-)
-
-mta_block = f"""{START}
-    location /mta/ {{
+    location /mta/ {
         auth_basic           "NYC Subway";
-        auth_basic_user_file {htpasswd};
-        proxy_pass           http://127.0.0.1:{port}/;
+        auth_basic_user_file $HTPASSWD;
+
+        proxy_pass           http://127.0.0.1:$PORT/;
         proxy_http_version   1.1;
-        proxy_set_header     Host $host;
-        proxy_set_header     X-Real-IP $remote_addr;
-        proxy_set_header     X-Forwarded-Proto $scheme;
+        proxy_set_header     Host \$host;
+        proxy_set_header     X-Real-IP \$remote_addr;
+        proxy_set_header     X-Forwarded-Proto \$scheme;
         proxy_read_timeout   15s;
-    }}
-{END}
-"""
+    }
 
-# Find matching closing brace for each "server {"
-def find_server_blocks(s):
-    blocks = []
-    i = 0
-    while True:
-        m = re.search(r'\bserver\s*\{', s[i:])
-        if not m:
-            break
-        start = i + m.start()
-        brace_start = i + m.end() - 1
-        depth = 1
-        j = brace_start + 1
-        while j < len(s) and depth > 0:
-            if s[j] == '{': depth += 1
-            elif s[j] == '}': depth -= 1
-            j += 1
-        blocks.append((start, j))  # j is one past the closing }
-        i = j
-    return blocks
+    location / { return 404; }
+}
+NGINX
 
-blocks = find_server_blocks(text)
-if not blocks:
-    sys.stderr.write("No server blocks found!\n")
-    sys.exit(1)
+ln -sf "$NGINX_SITE" "$NGINX_LINK"
 
-# Inject MTA block right before the closing } of:
-#  - the FIRST server block (main HTTPS app on 8444), AND
-#  - the SECOND server block (port 80 default_server redirect — so http://IP/mta/ works)
-inject_into = []
-for idx, (s_start, s_end) in enumerate(blocks[:3]):
-    block_text = text[s_start:s_end]
-    if idx == 0:
-        # Main HTTPS server (port 8444)
-        inject_into.append(s_end)
-    elif 'listen 80 default_server' in block_text:
-        inject_into.append(s_end)
-
-# Inject from the END so offsets stay valid
-inject_into.sort(reverse=True)
-for closing_pos in inject_into:
-    # closing_pos points to one past }, so we insert before the } itself
-    insert_at = closing_pos - 1
-    text = text[:insert_at] + mta_block + text[insert_at:]
-
-pathlib.Path(path).write_text(text)
-print(f"✓ Injected MTA block into {len(inject_into)} server block(s)")
-PY
-
-# ── Test + reload ───────────────────────
 if ! nginx -t 2>&1; then
-  echo "✗ nginx config test failed — REVERTING"
-  cp -a "$BACKUP" "$NGINX_DEFAULT"
+  echo "✗ nginx config test failed"
+  rm -f "$NGINX_LINK"
   exit 1
 fi
 
@@ -182,16 +124,13 @@ systemctl reload nginx
 echo "✓ nginx reloaded"
 
 # ── Done ────────────────────────────────
-SERVER_IP=$(hostname -I | awk '{print $1}')
 echo ""
 echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
 echo "  ✅ Done!"
 echo ""
-echo "  HTTP  IP   : http://$SERVER_IP/mta/"
-echo "  HTTPS dom. : https://app.apexdsp.info:8444/mta/"
+echo "  Open : http://$SERVER_IP/mta/"
+echo "  Login: $AUTH_USER / $AUTH_PASS"
 echo ""
-echo "  Login : $AUTH_USER / $AUTH_PASS"
-echo ""
-echo "  Logs  : journalctl -u $SERVICE -f"
-echo "  Stop  : systemctl stop $SERVICE"
+echo "  Logs : journalctl -u $SERVICE -f"
+echo "  Stop : systemctl stop $SERVICE"
 echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
