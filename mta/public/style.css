@@ -174,7 +174,8 @@ h1            { font-size: 17px; font-weight: 700; }
 }
 .bullet.sm { width: 22px; height: 22px; font-size: 11px; }
 
-.train-dest { flex: 1; font-size: 14px; font-weight: 500; }
+.train-dest { flex: 1; min-width: 0; font-size: 14px; font-weight: 500; }
+.train-id   { font-size: 11px; color: var(--dim); margin-top: 3px; font-variant-numeric: tabular-nums; }
 .train-min {
   font-size: 18px;
   font-weight: 700;

@@ -92,7 +92,13 @@ function extractArrivals(feed, targetStops) {
       if (!t) continue;
       const minutes = Math.round((t - nowSec) / 60);
       if (minutes < 0 || minutes > 90) continue;
-      out.push({ stopId: stu.stopId, route, minutes });
+      out.push({
+        stopId: stu.stopId,
+        route,
+        minutes,
+        tripId:    tu.trip?.tripId    || '',
+        startTime: tu.trip?.startTime || '',
+      });
     }
   }
 

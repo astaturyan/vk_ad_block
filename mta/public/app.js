@@ -187,13 +187,42 @@ function trainHTML(t, dir) {
   const dest  = DEST[dir]?.[t.route] || '';
   const minTxt = t.minutes === 0 ? 'Now' : `${t.minutes} min`;
   const cls   = t.minutes <= 1 ? 'urgent' : t.minutes <= 4 ? 'soon' : '';
+  const tag   = trainTag(t);
 
   return `
     <div class="train ${cls}">
       <div class="bullet" style="background:${color};color:${txt}">${escapeHtml(t.route)}</div>
-      <div class="train-dest">${escapeHtml(dest)}</div>
+      <div class="train-dest">
+        <div>${escapeHtml(dest)}</div>
+        ${tag ? `<div class="train-id" title="${escapeHtml(t.tripId || '')}">${tag}</div>` : ''}
+      </div>
       <div class="train-min">${minTxt}</div>
     </div>`;
+}
+
+// "106200_R..N93R" → { run: "93R", startTime } → "#93R · 5:42 PM"
+function trainTag(t) {
+  let run = '';
+  if (t.tripId) {
+    // run number lives after direction letter: e.g. _R..N93R or _R..S71
+    const m = t.tripId.match(/_[^.]+\.\.[NS](\d+[A-Z]?)/);
+    if (m) run = m[1];
+  }
+  const time = formatStartTime(t.startTime);
+  if (run && time) return `#${run} · started ${time}`;
+  if (time)        return `Started ${time}`;
+  if (run)         return `#${run}`;
+  return '';
+}
+
+function formatStartTime(s) {
+  if (!s) return '';
+  const [hStr, mStr] = s.split(':');
+  const h = parseInt(hStr, 10);
+  if (isNaN(h)) return '';
+  const ampm = h >= 12 ? 'PM' : 'AM';
+  const h12  = h % 12 || 12;
+  return `${h12}:${mStr} ${ampm}`;
 }
 
 function routesHTML(routes) {
