@@ -17,7 +17,10 @@
           <div id="last-updated" class="last-updated">Loading…</div>
         </div>
       </div>
-      <div id="countdown" class="countdown">↻ 30s</div>
+      <div class="header-right">
+        <span id="countdown" class="countdown">↻ 30s</span>
+        <button id="settings-btn" class="icon-btn" onclick="openSettings()" title="Settings">⚙</button>
+      </div>
     </header>
 
     <div id="alerts-section" class="alerts-section hidden">
@@ -28,16 +31,11 @@
       <div id="alerts-list" class="alerts-list"></div>
     </div>
 
-    <nav class="station-tabs">
-      <button class="tab active" data-station="77st"    onclick="selectStation('77st')">77 St</button>
-      <button class="tab"        data-station="unionsq" onclick="selectStation('unionsq')">Union Sq</button>
-      <button class="tab"        data-station="59lex"   onclick="selectStation('59lex')">59 St Lex</button>
-      <button class="tab"        data-station="dekalb"  onclick="selectStation('dekalb')">DeKalb</button>
-    </nav>
+    <nav id="station-tabs" class="station-tabs"></nav>
 
     <div class="direction-bar">
-      <button class="dir-btn active" id="dir-N" onclick="setDirection('N')">↑ Manhattan</button>
-      <button class="dir-btn"        id="dir-S" onclick="setDirection('S')">Brooklyn ↓</button>
+      <button class="dir-btn active" id="dir-N" onclick="setDirection('N')">↑ <span id="dir-N-label">Uptown</span></button>
+      <button class="dir-btn"        id="dir-S" onclick="setDirection('S')"><span id="dir-S-label">Downtown</span> ↓</button>
     </div>
 
     <div id="station-info" class="station-info"></div>
@@ -46,6 +44,46 @@
     </div>
 
   </div>
+
+  <!-- ── Settings modal ────────────────── -->
+  <div id="settings-modal" class="modal hidden" aria-hidden="true">
+    <div class="modal-bg" onclick="closeSettings()"></div>
+    <div class="modal-panel">
+
+      <header class="modal-header">
+        <h2>Stations</h2>
+        <button class="icon-btn" onclick="closeSettings()" title="Close">✕</button>
+      </header>
+
+      <div class="modal-body">
+        <div class="modal-section">
+          <h3>Tracked</h3>
+          <div id="tracked-list" class="tracked-list"></div>
+          <div id="tracked-empty" class="modal-hint hidden">No stations yet — add some below.</div>
+        </div>
+
+        <div class="modal-section">
+          <h3>Add station</h3>
+          <input
+            id="catalog-search"
+            type="search"
+            placeholder="Search station name or line (e.g. Union, R, 6)…"
+            autocomplete="off"
+            oninput="renderCatalog()"
+          >
+          <div id="catalog-count" class="modal-hint"></div>
+          <div id="catalog-list" class="catalog-list"></div>
+        </div>
+      </div>
+
+      <footer class="modal-footer">
+        <button onclick="closeSettings()" class="btn btn-cancel">Cancel</button>
+        <button onclick="saveSettings()"  class="btn btn-save">Save</button>
+      </footer>
+
+    </div>
+  </div>
+
   <script src="app.js"></script>
 </body>
 </html>
