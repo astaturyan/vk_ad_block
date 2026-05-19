@@ -1,0 +1,13 @@
+{
+  "name": "mta-subway-tracker",
+  "version": "1.0.0",
+  "description": "Personal NYC MTA Subway Tracker",
+  "main": "server.js",
+  "engines": { "node": ">=18.0.0" },
+  "scripts": { "start": "node server.js" },
+  "dependencies": {
+    "express": "^4.18.2",
+    "gtfs-realtime-bindings": "^1.0.0",
+    "node-fetch": "^2.7.0"
+  }
+}

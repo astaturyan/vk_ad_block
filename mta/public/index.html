@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+  <title>NYC Subway</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div id="app">
+
+    <header>
+      <div class="header-left">
+        <span class="logo">🚇</span>
+        <div>
+          <h1>NYC Subway</h1>
+          <div id="last-updated" class="last-updated">Loading…</div>
+        </div>
+      </div>
+      <div id="countdown" class="countdown">↻ 30s</div>
+    </header>
+
+    <div id="alerts-section" class="alerts-section hidden">
+      <button class="alerts-toggle" onclick="toggleAlerts()">
+        <span id="alerts-label">⚠️ Service Alerts</span>
+        <span id="alerts-chevron" class="chevron">▾</span>
+      </button>
+      <div id="alerts-list" class="alerts-list"></div>
+    </div>
+
+    <nav class="station-tabs">
+      <button class="tab active" data-station="77st"    onclick="selectStation('77st')">77 St</button>
+      <button class="tab"        data-station="unionsq" onclick="selectStation('unionsq')">Union Sq</button>
+      <button class="tab"        data-station="59lex"   onclick="selectStation('59lex')">59 St Lex</button>
+      <button class="tab"        data-station="dekalb"  onclick="selectStation('dekalb')">DeKalb</button>
+    </nav>
+
+    <div class="direction-bar">
+      <button class="dir-btn active" id="dir-N" onclick="setDirection('N')">↑ Manhattan</button>
+      <button class="dir-btn"        id="dir-S" onclick="setDirection('S')">Brooklyn ↓</button>
+    </div>
+
+    <div id="station-info" class="station-info"></div>
+    <div id="arrivals" class="arrivals">
+      <div class="state-msg">Loading…</div>
+    </div>
+
+  </div>
+  <script src="app.js"></script>
+</body>
+</html>
