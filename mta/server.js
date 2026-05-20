@@ -110,7 +110,17 @@ function extractArrivals(feed, targetStops) {
 // ────────────────────────────────────────────
 
 app.use(express.json());
-app.use(express.static(path.join(__dirname, 'public')));
+app.use(express.static(path.join(__dirname, 'public'), {
+  setHeaders: (res, filePath) => {
+    // HTML: never cache (so version-busting query strings always apply).
+    // Other assets: short cache, query-string-based busting handles updates.
+    if (filePath.endsWith('.html')) {
+      res.setHeader('Cache-Control', 'no-store, must-revalidate');
+    } else {
+      res.setHeader('Cache-Control', 'public, max-age=300');
+    }
+  },
+}));
 
 app.get('/api/catalog', (req, res) => {
   res.json({ ok: true, catalog });
