@@ -210,10 +210,23 @@ app.get('/api/alerts', async (req, res) => {
 
     const feed = await fetchFeed('alerts');
     const alerts = [];
+    const nowSec = Math.floor(Date.now() / 1000);
 
     for (const entity of feed.entity) {
       if (!entity.alert) continue;
       const a = entity.alert;
+
+      // Skip alerts that aren't active right now.
+      // No active_period at all = "always active" per GTFS-RT spec.
+      const periods = a.activePeriod || [];
+      const isActiveNow = periods.length === 0 || periods.some(p => {
+        const start = toSeconds(p.start);
+        const end   = toSeconds(p.end);
+        const okStart = !start || nowSec >= start;
+        const okEnd   = !end   || nowSec <= end;
+        return okStart && okEnd;
+      });
+      if (!isActiveNow) continue;
 
       const affectedStations = new Set();
       const lines = new Set();
