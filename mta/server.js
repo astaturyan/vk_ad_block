@@ -248,11 +248,17 @@ app.get('/api/alerts', async (req, res) => {
       const desc   = a.descriptionText?.translation?.[0]?.text || '';
       if (!header) continue;
 
+      const activePeriods = periods.map(p => ({
+        start: toSeconds(p.start) || null,
+        end:   toSeconds(p.end)   || null,
+      }));
+
       alerts.push({
         header,
         desc,
         lines: [...lines],
         stationIds: [...affectedStations],
+        activePeriods,
       });
     }
 

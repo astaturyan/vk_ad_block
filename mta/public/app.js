@@ -250,14 +250,62 @@ function renderAlerts() {
 }
 
 function alertItemHTML(a) {
+  const when = formatAlertPeriod(a.activePeriods);
   return `
     <div class="alert-item">
       <div class="alert-bullets">${a.lines.map(l => bulletHTML(l)).join('')}</div>
       <div>
         <div class="alert-header">${escapeHtml(a.header)}</div>
+        ${when ? `<div class="alert-when">${escapeHtml(when)}</div>` : ''}
         ${a.desc ? `<div class="alert-desc">${escapeHtml(a.desc.slice(0, 240))}${a.desc.length > 240 ? '…' : ''}</div>` : ''}
       </div>
     </div>`;
+}
+
+function formatAlertPeriod(periods) {
+  if (!periods || periods.length === 0) return '';
+  const now = Math.floor(Date.now() / 1000);
+  // Find the period that is currently active (or the next upcoming one)
+  let p = periods.find(x => (!x.start || now >= x.start) && (!x.end || now <= x.end));
+  if (!p) p = periods.find(x => x.start && x.start > now);
+  if (!p) p = periods[0];
+  if (!p) return '';
+
+  const isUpcoming = p.start && p.start > now;
+
+  if (p.start && p.end) {
+    return isUpcoming
+      ? `From ${formatTs(p.start)} – ${formatTs(p.end)}`
+      : `Until ${formatTs(p.end)}`;
+  }
+  if (p.end) return `Until ${formatTs(p.end)}`;
+  if (p.start) {
+    return isUpcoming
+      ? `Starts ${formatTs(p.start)}`
+      : `Since ${formatTs(p.start)}`;
+  }
+  return '';
+}
+
+function formatTs(sec) {
+  const d  = new Date(sec * 1000);
+  const now = new Date();
+  const sameDay = d.toDateString() === now.toDateString();
+
+  const tomorrow = new Date(now); tomorrow.setDate(now.getDate() + 1);
+  const isTomorrow = d.toDateString() === tomorrow.toDateString();
+
+  const timeStr = d.toLocaleTimeString([], { hour: 'numeric', minute: '2-digit' });
+
+  if (sameDay)    return timeStr;
+  if (isTomorrow) return `tomorrow ${timeStr}`;
+
+  // Within the next 7 days → weekday name
+  const diffDays = Math.round((d - now) / 86400000);
+  if (diffDays > 0 && diffDays < 7) {
+    return `${d.toLocaleDateString([], { weekday: 'short' })} ${timeStr}`;
+  }
+  return d.toLocaleString([], { month: 'short', day: 'numeric', hour: 'numeric', minute: '2-digit' });
 }
 
 function bulletHTML(line) {
