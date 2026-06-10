@@ -185,7 +185,9 @@ function trainHTML(t, dir) {
   const dark  = DARK_TEXT.has(t.route);
   const txt   = dark ? '#000' : '#fff';
   const dest  = DEST[dir]?.[t.route] || '';
-  const minTxt = t.minutes === 0 ? 'Now' : `${t.minutes} min`;
+  const minTxt  = t.minutes === 0 ? 'Now' : `${t.minutes} min`;
+  const arrTime = new Date(Date.now() + t.minutes * 60000)
+    .toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit', hour12: true });
   const cls   = t.minutes <= 1 ? 'urgent' : t.minutes <= 4 ? 'soon' : '';
   const tag   = trainTag(t);
 
@@ -196,7 +198,10 @@ function trainHTML(t, dir) {
         <div>${escapeHtml(dest)}</div>
         ${tag ? `<div class="train-id" title="${escapeHtml(t.tripId || '')}">${tag}</div>` : ''}
       </div>
-      <div class="train-min">${minTxt}</div>
+      <div class="train-min">
+        <div>${minTxt}</div>
+        ${t.minutes > 0 ? `<div class="train-clock">${arrTime}</div>` : ''}
+      </div>
     </div>`;
 }
 
