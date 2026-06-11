@@ -55,6 +55,7 @@ h1            { font-size: 17px; font-weight: 700; }
   transition: background 0.15s, border-color 0.15s;
 }
 .icon-btn:hover { background: var(--surface2); border-color: var(--border); }
+.icon-btn.geo-active { color: #4cff72; border-color: #4cff72; background: rgba(76,255,114,.08); }
 
 /* ── Alerts banner ───────────────────── */
 .alerts-section { background: #110e00; border-bottom: 2px solid #5a4800; }

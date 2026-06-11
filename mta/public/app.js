@@ -48,6 +48,9 @@ let refreshTimer, tickTimer;
 let modalTracked   = [];          // working copy while modal open
 let modalSearch    = '';
 
+let geoActive      = false;
+let geoWatchId     = null;
+
 // ────────────────────────────────────────────
 //  Boot
 // ────────────────────────────────────────────
@@ -481,6 +484,70 @@ function escapeHtml(s) {
   return String(s ?? '').replace(/[&<>"']/g, c => ({
     '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'
   }[c]));
+}
+
+// ────────────────────────────────────────────
+//  Geolocation
+// ────────────────────────────────────────────
+
+function haversineKm(lat1, lon1, lat2, lon2) {
+  const R = 6371;
+  const dLat = (lat2 - lat1) * Math.PI / 180;
+  const dLon = (lon2 - lon1) * Math.PI / 180;
+  const a = Math.sin(dLat/2)**2 +
+            Math.cos(lat1 * Math.PI/180) * Math.cos(lat2 * Math.PI/180) * Math.sin(dLon/2)**2;
+  return R * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+}
+
+function nearestStation(lat, lon) {
+  if (!stations.length || !catalog) return null;
+  let best = null, bestDist = Infinity;
+  for (const s of stations) {
+    const cs = catalog.stations.find(c => c.id === s.id);
+    if (!cs || cs.lat == null) continue;
+    const d = haversineKm(lat, lon, cs.lat, cs.lon);
+    if (d < bestDist) { bestDist = d; best = s.id; }
+  }
+  return best;
+}
+
+function onGeoPosition(pos) {
+  const { latitude: lat, longitude: lon } = pos.coords;
+  const nearest = nearestStation(lat, lon);
+  if (nearest && nearest !== currentStation) {
+    selectStation(nearest);
+  }
+  const btn = document.getElementById('geo-btn');
+  if (btn) btn.title = `Auto: nearest station active`;
+}
+
+function onGeoError(err) {
+  geoActive = false;
+  updateGeoBtn();
+  alert('Location error: ' + err.message);
+}
+
+function toggleGeo() {
+  if (!navigator.geolocation) { alert('Geolocation not supported'); return; }
+  geoActive = !geoActive;
+  if (geoActive) {
+    geoWatchId = navigator.geolocation.watchPosition(onGeoPosition, onGeoError, {
+      enableHighAccuracy: false,
+      maximumAge: 30000,
+      timeout: 10000,
+    });
+  } else {
+    if (geoWatchId != null) navigator.geolocation.clearWatch(geoWatchId);
+    geoWatchId = null;
+  }
+  updateGeoBtn();
+}
+
+function updateGeoBtn() {
+  const btn = document.getElementById('geo-btn');
+  if (!btn) return;
+  btn.classList.toggle('geo-active', geoActive);
+  btn.title = geoActive ? 'Auto-select ON — tap to disable' : 'Auto-select nearest station';
 }
 
 window.addEventListener('DOMContentLoaded', boot);

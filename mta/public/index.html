@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
   <title>NYC Subway</title>
-  <link rel="stylesheet" href="style.css?v=5">
+  <link rel="stylesheet" href="style.css?v=6">
 </head>
 <body>
   <div id="app">
@@ -19,6 +19,7 @@
       </div>
       <div class="header-right">
         <span id="countdown" class="countdown">↻ 30s</span>
+        <button id="geo-btn" class="icon-btn" onclick="toggleGeo()" title="Auto-select nearest station">📍</button>
         <button id="settings-btn" class="icon-btn" onclick="openSettings()" title="Settings">⚙</button>
       </div>
     </header>
@@ -84,6 +85,6 @@
     </div>
   </div>
 
-  <script src="app.js?v=5"></script>
+  <script src="app.js?v=6"></script>
 </body>
 </html>

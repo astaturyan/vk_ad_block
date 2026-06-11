@@ -61,6 +61,8 @@ const I = {
   stopName:   idx('Stop Name'),
   borough:    idx('Borough'),
   routes:     idx('Daytime Routes'),
+  lat:        idx('GTFS Latitude'),
+  lon:        idx('GTFS Longitude'),
   northLabel: idx('North Direction Label'),
   southLabel: idx('South Direction Label'),
 };
@@ -79,6 +81,9 @@ for (const line of rows) {
   const northLbl  = f[I.northLabel];
   const southLbl  = f[I.southLabel];
 
+  const lat = parseFloat(f[I.lat]);
+  const lon = parseFloat(f[I.lon]);
+
   if (!complexes.has(complexId)) {
     complexes.set(complexId, {
       id: 'c' + complexId,
@@ -89,10 +94,14 @@ for (const line of rows) {
       feeds: new Set(),
       northLabels: new Map(),
       southLabels: new Map(),
+      latSum: 0, lonSum: 0, coordCount: 0,
     });
   }
 
   const c = complexes.get(complexId);
+  if (!isNaN(lat) && !isNaN(lon)) {
+    c.latSum += lat; c.lonSum += lon; c.coordCount++;
+  }
   c.names.set(name, (c.names.get(name) || 0) + 1);
   routes.forEach(r => c.routes.add(r));
   c.stopIds.add(stopId);
@@ -123,7 +132,7 @@ const stations = [];
 for (const c of complexes.values()) {
   const name = mostCommon(c.names);
   const routes = sortRoutes(c.routes);
-  stations.push({
+  const entry = {
     id: c.id,
     name,
     borough: BOROUGH_NAME[c.borough] || c.borough,
@@ -132,7 +141,12 @@ for (const c of complexes.values()) {
     stopIds: [...c.stopIds].sort(),
     north: mostCommon(c.northLabels) || 'Uptown',
     south: mostCommon(c.southLabels) || 'Downtown',
-  });
+  };
+  if (c.coordCount > 0) {
+    entry.lat = Math.round((c.latSum / c.coordCount) * 1e6) / 1e6;
+    entry.lon = Math.round((c.lonSum / c.coordCount) * 1e6) / 1e6;
+  }
+  stations.push(entry);
 }
 
 // Sort: borough → name
