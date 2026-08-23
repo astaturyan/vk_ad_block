@@ -658,7 +658,8 @@ main { max-width: 720px; margin: 0 auto; padding: 20px 16px 40px; }
       <button class="filter-btn" onclick="setVocabFilter('months')">Months</button>
       <button class="filter-btn" onclick="setVocabFilter('holidays')">Holidays</button>
       <button class="filter-btn" onclick="setVocabFilter('verbs')">Verbs</button>
-      <button class="filter-btn" onclick="setVocabFilter('other')">Other</button>
+      <button class="filter-btn" onclick="setVocabFilter('func')">Other (Function)</button>
+      <button class="filter-btn" onclick="setVocabFilter('content')">Other (Content)</button>
     </div>
 
     <div class="section-title" id="vocabSectionTitle">All Vocabulary Words</div>
@@ -671,6 +672,12 @@ main { max-width: 720px; margin: 0 auto; padding: 20px 16px 40px; }
     </div>
   </div>
 
+  <footer style="margin-top:32px;padding-top:16px;border-top:1.5px solid var(--border);font-size:0.72rem;color:var(--text-muted);line-height:1.6;text-align:center">
+    Questions and answers transcribed verbatim from USCIS <strong>M-1778 (09/25)</strong>, "128 Civics Questions and Answers (2025 version)".
+    Writing vocabulary from USCIS <strong>M-1178</strong>.<br>
+    Answers about current officials change with elections and appointments — verify at
+    <strong>uscis.gov/citizenship/testupdates</strong> before your interview.
+  </footer>
 </main>
 
 <script>
@@ -704,23 +711,23 @@ const QUESTIONS = [
   {id:20, q:"Name one power of the U.S. Congress.", a:["Writes laws","Declares war","Makes the federal budget"], cat:"American Government", starred:true},
   {id:21, q:"How many U.S. senators are there?", a:["One hundred (100)"], cat:"American Government", starred:false},
   {id:22, q:"How long is a term for a U.S. senator?", a:["Six (6) years"], cat:"American Government", starred:false},
-  {id:23, q:"Who is one of your state's U.S. senators now?", a:["[Answer varies by state]"], cat:"American Government", starred:false, variable:true},
+  {id:23, q:"Who is one of your state's U.S. senators now?", a:["Answers will vary.","[District of Columbia residents and residents of U.S. territories should answer that D.C. (or the territory where the applicant lives) has no U.S. senators.]"], cat:"American Government", starred:false, variable:true},
   {id:24, q:"How many voting members are in the House of Representatives?", a:["Four hundred thirty-five (435)"], cat:"American Government", starred:false},
   {id:25, q:"How long is a term for a member of the House of Representatives?", a:["Two (2) years"], cat:"American Government", starred:false},
   {id:26, q:"Why do U.S. representatives serve shorter terms than U.S. senators?", a:["To more closely follow public opinion"], cat:"American Government", starred:false},
   {id:27, q:"How many senators does each state have?", a:["Two (2)"], cat:"American Government", starred:false},
   {id:28, q:"Why does each state have two senators?", a:["Equal representation (for small states)","The Great Compromise (Connecticut Compromise)"], cat:"American Government", starred:false},
-  {id:29, q:"Name your U.S. representative.", a:["[Answer varies by congressional district]"], cat:"American Government", starred:false, variable:true},
-  {id:30, q:"What is the name of the Speaker of the House of Representatives now?", a:["[Check uscis.gov/citizenship/testupdates for current name]"], cat:"American Government", starred:true, variable:true},
+  {id:29, q:"Name your U.S. representative.", a:["Answers will vary.","[Residents of territories with nonvoting Delegates or Resident Commissioners may provide the name of that Delegate or Commissioner. Also acceptable is any statement that the territory has no (voting) representatives in Congress.]"], cat:"American Government", starred:false, variable:true},
+  {id:30, q:"What is the name of the Speaker of the House of Representatives now?", a:["Visit uscis.gov/citizenship/testupdates for the name of the Speaker of the House of Representatives."], cat:"American Government", starred:true, variable:true},
   {id:31, q:"Who does a U.S. senator represent?", a:["Citizens of their state","People of their state"], cat:"American Government", starred:false},
   {id:32, q:"Who elects U.S. senators?", a:["Citizens from their state"], cat:"American Government", starred:false},
-  {id:33, q:"Who does a member of the House of Representatives represent?", a:["Citizens in their (congressional) district","People in their district"], cat:"American Government", starred:false},
+  {id:33, q:"Who does a member of the House of Representatives represent?", a:["Citizens in their (congressional) district","Citizens in their district","People from their (congressional) district","People in their district"], cat:"American Government", starred:false},
   {id:34, q:"Who elects members of the House of Representatives?", a:["Citizens from their (congressional) district"], cat:"American Government", starred:false},
   {id:35, q:"Some states have more representatives than other states. Why?", a:["(Because of) the state's population","(Because) they have more people","(Because) some states have more people"], cat:"American Government", starred:false},
   {id:36, q:"The President of the United States is elected for how many years?", a:["Four (4) years"], cat:"American Government", starred:true},
   {id:37, q:"The President of the United States can serve only two terms. Why?", a:["(Because of) the 22nd Amendment","To keep the president from becoming too powerful"], cat:"American Government", starred:false},
-  {id:38, q:"What is the name of the President of the United States now?", a:["[Check uscis.gov/citizenship/testupdates for current name]"], cat:"American Government", starred:true, variable:true},
-  {id:39, q:"What is the name of the Vice President of the United States now?", a:["[Check uscis.gov/citizenship/testupdates for current name]"], cat:"American Government", starred:true, variable:true},
+  {id:38, q:"What is the name of the President of the United States now?", a:["Visit uscis.gov/citizenship/testupdates for the name of the President of the United States."], cat:"American Government", starred:true, variable:true},
+  {id:39, q:"What is the name of the Vice President of the United States now?", a:["Visit uscis.gov/citizenship/testupdates for the name of the Vice President of the United States."], cat:"American Government", starred:true, variable:true},
   {id:40, q:"If the president can no longer serve, who becomes president?", a:["The Vice President (of the United States)"], cat:"American Government", starred:false},
   {id:41, q:"Name one power of the president.", a:["Signs bills into law","Vetoes bills","Enforces laws","Commander in Chief (of the military)","Chief diplomat","Appoints federal judges"], cat:"American Government", starred:false},
   {id:42, q:"Who is Commander in Chief of the U.S. military?", a:["The President (of the United States)"], cat:"American Government", starred:false},
@@ -729,7 +736,7 @@ const QUESTIONS = [
   {id:45, q:"Who appoints federal judges?", a:["The President (of the United States)"], cat:"American Government", starred:false},
   {id:46, q:"The executive branch has many parts. Name one.", a:["President (of the United States)","Cabinet","Federal departments and agencies"], cat:"American Government", starred:false},
   {id:47, q:"What does the President's Cabinet do?", a:["Advises the President (of the United States)"], cat:"American Government", starred:false},
-  {id:48, q:"What are two Cabinet-level positions?", a:["Attorney General","Secretary of Agriculture","Secretary of Commerce","Secretary of Defense","Secretary of Education","Secretary of Energy","Secretary of Health and Human Services","Secretary of Homeland Security","Secretary of Housing and Urban Development","Secretary of the Interior","Secretary of Labor","Secretary of State","Secretary of Transportation","Secretary of the Treasury","Secretary of Veterans Affairs","Vice President","Administrator of the EPA","Director of the CIA","Director of National Intelligence"], cat:"American Government", starred:false, multi:2},
+  {id:48, q:"What are two Cabinet-level positions?", a:["Attorney General","Secretary of Agriculture","Secretary of Commerce","Secretary of Education","Secretary of Energy","Secretary of Health and Human Services","Secretary of Homeland Security","Secretary of Housing and Urban Development","Secretary of the Interior","Secretary of Labor","Secretary of State","Secretary of Transportation","Secretary of the Treasury","Secretary of Veterans Affairs","Secretary of War (Defense)","Vice-President","Administrator of the Environmental Protection Agency","Administrator of the Small Business Administration","Director of the Central Intelligence Agency","Director of the Office of Management and Budget","Director of National Intelligence","United States Trade Representative"], cat:"American Government", starred:false, multi:2},
   {id:49, q:"Why is the Electoral College important?", a:["It decides who is elected president.","It provides a compromise between the popular election of the president and congressional selection."], cat:"American Government", starred:false},
   {id:50, q:"What is one part of the judicial branch?", a:["Supreme Court","Federal Courts"], cat:"American Government", starred:false},
   {id:51, q:"What does the judicial branch do?", a:["Reviews laws","Explains laws","Resolves disputes (disagreements) about the law","Decides if a law goes against the (U.S.) Constitution"], cat:"American Government", starred:false},
@@ -738,21 +745,21 @@ const QUESTIONS = [
   {id:54, q:"How many Supreme Court justices are usually needed to decide a case?", a:["Five (5)"], cat:"American Government", starred:false},
   {id:55, q:"How long do Supreme Court justices serve?", a:["(For) life","Lifetime appointment","(Until) retirement"], cat:"American Government", starred:false},
   {id:56, q:"Supreme Court justices serve for life. Why?", a:["To be independent (of politics)","To limit outside (political) influence"], cat:"American Government", starred:false},
-  {id:57, q:"Who is the Chief Justice of the United States now?", a:["[Check uscis.gov/citizenship/testupdates for current name]"], cat:"American Government", starred:false, variable:true},
+  {id:57, q:"Who is the Chief Justice of the United States now?", a:["Visit uscis.gov/citizenship/testupdates for the name of the Chief Justice of the United States."], cat:"American Government", starred:false, variable:true},
   {id:58, q:"Name one power that is only for the federal government.", a:["Print paper money","Mint coins","Declare war","Create an army","Make treaties","Set foreign policy"], cat:"American Government", starred:false},
   {id:59, q:"Name one power that is only for the states.", a:["Provide schooling and education","Provide protection (police)","Provide safety (fire departments)","Give a driver's license","Approve zoning and land use"], cat:"American Government", starred:false},
   {id:60, q:"What is the purpose of the 10th Amendment?", a:["(It states that the) powers not given to the federal government belong to the states or to the people."], cat:"American Government", starred:false},
-  {id:61, q:"Who is the governor of your state now?", a:["[Answer varies by state]"], cat:"American Government", starred:true, variable:true},
-  {id:62, q:"What is the capital of your state?", a:["[Answer varies by state]"], cat:"American Government", starred:false, variable:true},
+  {id:61, q:"Who is the governor of your state now?", a:["Answers will vary.","[District of Columbia residents should answer that D.C. does not have a governor.]"], cat:"American Government", starred:true, variable:true},
+  {id:62, q:"What is the capital of your state?", a:["Answers will vary.","[District of Columbia residents should answer that D.C. is not a state and does not have a capital. Residents of U.S. territories should name the capital of the territory.]"], cat:"American Government", starred:false, variable:true},
 
   // ── American Government: Rights & Responsibilities ──
   {id:63, q:"There are four amendments to the U.S. Constitution about who can vote. Describe one of them.", a:["Citizens eighteen (18) and older (can vote).","You don't have to pay (a poll tax) to vote.","Any citizen can vote. (Women and men can vote.)","A male citizen of any race (can vote)."], cat:"American Government", starred:false},
   {id:64, q:"Who can vote in federal elections, run for federal office, and serve on a jury in the United States?", a:["Citizens","Citizens of the United States","U.S. citizens"], cat:"American Government", starred:false},
   {id:65, q:"What are three rights of everyone living in the United States?", a:["Freedom of expression","Freedom of speech","Freedom of assembly","Freedom to petition the government","Freedom of religion","The right to bear arms"], cat:"American Government", starred:false, multi:3},
   {id:66, q:"What do we show loyalty to when we say the Pledge of Allegiance?", a:["The United States","The flag"], cat:"American Government", starred:true},
-  {id:67, q:"Name two promises that new citizens make in the Oath of Allegiance.", a:["Give up loyalty to other countries","Defend the (U.S.) Constitution","Obey the laws of the United States","Serve in the military (if needed)","Serve (help) the nation (if needed)","Be loyal to the United States"], cat:"American Government", starred:false, multi:2},
-  {id:68, q:"How can people become United States citizens?", a:["Be born in the United States (under the 14th Amendment)","Naturalize","Derive citizenship (under conditions set by Congress)"], cat:"American Government", starred:false},
-  {id:69, q:"What are two examples of civic participation in the United States?", a:["Vote","Run for office","Join a political party","Help with a campaign","Join a civic group","Join a community group","Give an elected official your opinion","Contact elected officials","Support or oppose an issue or policy","Write to a newspaper"], cat:"American Government", starred:false, multi:2},
+  {id:67, q:"Name two promises that new citizens make in the Oath of Allegiance.", a:["Give up loyalty to other countries","Defend the (U.S.) Constitution","Obey the laws of the United States","Serve in the military (if needed)","Serve (help, do important work for) the nation (if needed)","Be loyal to the United States"], cat:"American Government", starred:false, multi:2},
+  {id:68, q:"How can people become United States citizens?", a:["Be born in the United States, under the conditions set by the 14th Amendment","Naturalize","Derive citizenship (under conditions set by Congress)"], cat:"American Government", starred:false},
+  {id:69, q:"What are two examples of civic participation in the United States?", a:["Vote","Run for office","Join a political party","Help with a campaign","Join a civic group","Join a community group","Give an elected official your opinion (on an issue)","Contact elected officials","Support or oppose an issue or policy","Write to a newspaper"], cat:"American Government", starred:false, multi:2},
   {id:70, q:"What is one way Americans can serve their country?", a:["Vote","Pay taxes","Obey the law","Serve in the military","Run for office","Work for local, state, or federal government"], cat:"American Government", starred:false},
   {id:71, q:"Why is it important to pay federal taxes?", a:["Required by law","All people pay to fund the federal government","Required by the (U.S.) Constitution (16th Amendment)","Civic duty"], cat:"American Government", starred:false},
   {id:72, q:"It is important for all men age 18 through 25 to register for the Selective Service. Name one reason why.", a:["Required by law","Civic duty","Makes the draft fair, if needed"], cat:"American Government", starred:false},
@@ -784,7 +791,7 @@ const QUESTIONS = [
   {id:94, q:"Abraham Lincoln is famous for many things. Name one.", a:["Freed the slaves (Emancipation Proclamation)","Saved (or preserved) the Union","Led the United States during the Civil War","16th president of the United States","Delivered the Gettysburg Address"], cat:"American History", starred:true},
   {id:95, q:"What did the Emancipation Proclamation do?", a:["Freed the slaves","Freed slaves in the Confederacy","Freed slaves in the Confederate states","Freed slaves in most Southern states"], cat:"American History", starred:false},
   {id:96, q:"What U.S. war ended slavery?", a:["The Civil War"], cat:"American History", starred:false},
-  {id:97, q:"What amendment says all persons born or naturalized in the United States are U.S. citizens?", a:["14th Amendment"], cat:"American History", starred:false},
+  {id:97, q:"What amendment says all persons born or naturalized in the United States, and subject to the jurisdiction thereof, are U.S. citizens?", a:["14th Amendment"], cat:"American History", starred:false},
   {id:98, q:"When did all men get the right to vote?", a:["After the Civil War","During Reconstruction","(With the) 15th Amendment","1870"], cat:"American History", starred:false},
   {id:99, q:"Name one leader of the women's rights movement in the 1800s.", a:["Susan B. Anthony","Elizabeth Cady Stanton","Sojourner Truth","Harriet Tubman","Lucretia Mott","Lucy Stone"], cat:"American History", starred:false},
 
@@ -802,16 +809,16 @@ const QUESTIONS = [
   {id:110, q:"Why did the United States enter the Korean War?", a:["To stop the spread of communism"], cat:"American History", starred:false},
   {id:111, q:"Why did the United States enter the Vietnam War?", a:["To stop the spread of communism"], cat:"American History", starred:false},
   {id:112, q:"What did the civil rights movement do?", a:["Fought to end racial discrimination"], cat:"American History", starred:false},
-  {id:113, q:"Martin Luther King, Jr. is famous for many things. Name one.", a:["Fought for civil rights","Worked for equality for all Americans","Worked to ensure people would \"not be judged by the color of their skin, but by the content of their character\""], cat:"American History", starred:true},
+  {id:113, q:"Martin Luther King, Jr. is famous for many things. Name one.", a:["Fought for civil rights","Worked for equality for all Americans","Worked to ensure that people would \"not be judged by the color of their skin, but by the content of their character\""], cat:"American History", starred:true},
   {id:114, q:"Why did the United States enter the Persian Gulf War?", a:["To force the Iraqi military from Kuwait"], cat:"American History", starred:false},
-  {id:115, q:"What major event happened on September 11, 2001 in the United States?", a:["Terrorists attacked the United States","Terrorists took over two planes and crashed them into the World Trade Center in New York City","Terrorists took over a plane and crashed into the Pentagon in Arlington, Virginia","Terrorists took over a plane aimed at Washington, D.C., and crashed in a field in Pennsylvania"], cat:"American History", starred:true},
+  {id:115, q:"What major event happened on September 11, 2001 in the United States?", a:["Terrorists attacked the United States","Terrorists took over two planes and crashed them into the World Trade Center in New York City","Terrorists took over a plane and crashed into the Pentagon in Arlington, Virginia","Terrorists took over a plane originally aimed at Washington, D.C., and crashed in a field in Pennsylvania"], cat:"American History", starred:true},
   {id:116, q:"Name one U.S. military conflict after the September 11, 2001 attacks.", a:["(Global) War on Terror","War in Afghanistan","War in Iraq"], cat:"American History", starred:false},
   {id:117, q:"Name one American Indian tribe in the United States.", a:["Apache","Blackfeet","Cayuga","Cherokee","Cheyenne","Chippewa","Choctaw","Creek","Crow","Hopi","Huron","Inupiat","Lakota","Mohawk","Mohegan","Navajo","Oneida","Onondaga","Pueblo","Seminole","Seneca","Shawnee","Sioux","Teton","Tuscarora"], cat:"American History", starred:false},
   {id:118, q:"Name one example of an American innovation.", a:["Light bulb","Automobile (cars, internal combustion engine)","Skyscrapers","Airplane","Assembly line","Landing on the moon","Integrated circuit (IC)"], cat:"American History", starred:false},
 
   // ── Symbols and Holidays ──
   {id:119, q:"What is the capital of the United States?", a:["Washington, D.C."], cat:"Symbols & Holidays", starred:false},
-  {id:120, q:"Where is the Statue of Liberty?", a:["New York (Harbor)","Liberty Island","New Jersey","Near New York City"], cat:"Symbols & Holidays", starred:false},
+  {id:120, q:"Where is the Statue of Liberty?", a:["New York (Harbor)","Liberty Island","[Also acceptable are New Jersey, near New York City, and on the Hudson (River).]"], cat:"Symbols & Holidays", starred:false},
   {id:121, q:"Why does the flag have 13 stripes?", a:["(Because there were) 13 original colonies","(Because the stripes) represent the original colonies"], cat:"Symbols & Holidays", starred:true},
   {id:122, q:"Why does the flag have 50 stars?", a:["(Because there is) one star for each state","(Because) each star represents a state","(Because there are) 50 states"], cat:"Symbols & Holidays", starred:false},
   {id:123, q:"What is the name of the national anthem?", a:["The Star-Spangled Banner"], cat:"Symbols & Holidays", starred:false},
@@ -824,14 +831,18 @@ const QUESTIONS = [
 
 const WRITING_VOCAB = {
   people:   ["Adams","Lincoln","Washington"],
-  civics:   ["American Indians","capital","citizens","Civil War","Congress","Father of Our Country","flag","free","freedom of speech","President","right","Senators","state","states","White House"],
+  civics:   ["American Indians","capital","citizens","Civil War","Congress","Father of Our Country","flag","free","freedom of speech","President","right","Senators","state/states","White House"],
   places:   ["Alaska","California","Canada","Delaware","Mexico","New York City","United States","Washington","Washington, D.C."],
   months:   ["February","May","June","July","September","October","November"],
   holidays: ["Presidents' Day","Memorial Day","Flag Day","Independence Day","Labor Day","Columbus Day","Thanksgiving"],
-  verbs:    ["can","come","elect","have","has","is","was","be","lives","lived","meets","pay","vote","want"],
-  other:    ["and","during","for","here","in","of","on","the","to","we","blue","dollar bill","fifty","50","first","largest","most","north","one","one hundred","100","people","red","second","south","taxes","white"]
+  verbs:    ["can","come","elect","have/has","is/was/be","lives/lived","meets","pay","vote","want"],
+  func:     ["and","during","for","here","in","of","on","the","to","we"],
+  content:  ["blue","dollar bill","fifty/50","first","largest","most","north","one","one hundred/100","people","red","second","south","taxes","white"]
 };
 
+// Practice sentences. USCIS does not publish the actual test sentences — these are
+// built strictly from the official M-1178 writing vocabulary above, as the word
+// strips instructions direct. Every word here appears on that list.
 const SENTENCES = [
   "Washington is the Father of Our Country.",
   "Lincoln lived in the White House.",
@@ -846,13 +857,23 @@ const SENTENCES = [
   "Canada is north of the United States.",
   "Mexico is south of the United States.",
   "Citizens can vote for President.",
-  "We pay taxes for the government.",
+  "We pay taxes.",
   "Flag Day is in June.",
   "Independence Day is in July.",
   "Labor Day is in September.",
   "Columbus Day is in October.",
   "Thanksgiving is in November.",
-  "Congress meets in Washington, D.C."
+  "Presidents' Day is in February.",
+  "Delaware is the first state.",
+  "California has the most people.",
+  "Washington is on the dollar bill.",
+  "The United States has fifty states.",
+  "American Indians lived here first.",
+  "Lincoln was President during the Civil War.",
+  "People want to be free.",
+  "Citizens have freedom of speech.",
+  "The capital is Washington, D.C.",
+  "People come to New York City."
 ];
 
 // ═══════════════════════════════════════════════════════════
@@ -1165,9 +1186,9 @@ function showTestSetup() {
 // ═══════════════════════════════════════════════════════════
 
 const VOCAB_LABELS = {
-  all:'All Vocabulary Words', people:'People', civics:'Civics Terms',
-  places:'Places', months:'Months', holidays:'Holidays',
-  verbs:'Verbs', other:'Other Words'
+  all:'All Vocabulary Words', people:'People', civics:'Civics', places:'Places',
+  months:'Months', holidays:'Holidays', verbs:'Verbs',
+  func:'Other (Function)', content:'Other (Content)'
 };
 
 function setVocabFilter(f) {
