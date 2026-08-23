@@ -510,7 +510,7 @@ main { max-width: 720px; margin: 0 auto; padding: 20px 16px 40px; }
     <span class="header-flag">🇺🇸</span>
     <div class="header-title">
       <h1>US Citizenship Test Prep</h1>
-      <p>2025 USCIS Naturalization Test</p>
+      <p>2025 USCIS Naturalization Test · <span style="color:var(--gold-light)">New York</span></p>
     </div>
     <div class="session-stats" id="sessionStats">0 / 0</div>
   </div>
@@ -675,7 +675,9 @@ main { max-width: 720px; margin: 0 auto; padding: 20px 16px 40px; }
   <footer style="margin-top:32px;padding-top:16px;border-top:1.5px solid var(--border);font-size:0.72rem;color:var(--text-muted);line-height:1.6;text-align:center">
     Questions and answers transcribed verbatim from USCIS <strong>M-1778 (09/25)</strong>, "128 Civics Questions and Answers (2025 version)".
     Writing vocabulary from USCIS <strong>M-1178</strong>.<br>
-    Answers about current officials change with elections and appointments — verify at
+    Answers that name a current official are pre-filled for <strong>New York</strong> and were current as of
+    <strong>August 2026</strong>. These are not part of the fixed USCIS answer key &mdash; they change with
+    elections and appointments, so verify each one at
     <strong>uscis.gov/citizenship/testupdates</strong> before your interview.
   </footer>
 </main>
@@ -711,14 +713,14 @@ const QUESTIONS = [
   {id:20, q:"Name one power of the U.S. Congress.", a:["Writes laws","Declares war","Makes the federal budget"], cat:"American Government", starred:true},
   {id:21, q:"How many U.S. senators are there?", a:["One hundred (100)"], cat:"American Government", starred:false},
   {id:22, q:"How long is a term for a U.S. senator?", a:["Six (6) years"], cat:"American Government", starred:false},
-  {id:23, q:"Who is one of your state's U.S. senators now?", a:["Answers will vary.","[District of Columbia residents and residents of U.S. territories should answer that D.C. (or the territory where the applicant lives) has no U.S. senators.]"], cat:"American Government", starred:false, variable:true},
+  {id:23, q:"Who is one of your state's U.S. senators now?", a:["(Chuck) Schumer","(Kirsten) Gillibrand"], official:"Answers will vary. [District of Columbia residents and residents of U.S. territories should answer that D.C. (or the territory where the applicant lives) has no U.S. senators.]", cat:"American Government", starred:false, variable:true, local:true},
   {id:24, q:"How many voting members are in the House of Representatives?", a:["Four hundred thirty-five (435)"], cat:"American Government", starred:false},
   {id:25, q:"How long is a term for a member of the House of Representatives?", a:["Two (2) years"], cat:"American Government", starred:false},
   {id:26, q:"Why do U.S. representatives serve shorter terms than U.S. senators?", a:["To more closely follow public opinion"], cat:"American Government", starred:false},
   {id:27, q:"How many senators does each state have?", a:["Two (2)"], cat:"American Government", starred:false},
   {id:28, q:"Why does each state have two senators?", a:["Equal representation (for small states)","The Great Compromise (Connecticut Compromise)"], cat:"American Government", starred:false},
-  {id:29, q:"Name your U.S. representative.", a:["Answers will vary.","[Residents of territories with nonvoting Delegates or Resident Commissioners may provide the name of that Delegate or Commissioner. Also acceptable is any statement that the territory has no (voting) representatives in Congress.]"], cat:"American Government", starred:false, variable:true},
-  {id:30, q:"What is the name of the Speaker of the House of Representatives now?", a:["Visit uscis.gov/citizenship/testupdates for the name of the Speaker of the House of Representatives."], cat:"American Government", starred:true, variable:true},
+  {id:29, q:"Name your U.S. representative.", a:["Depends on your congressional district, not just your state — New York has 26 of them.","Look up your district and representative at house.gov/representatives/find-your-representative"], official:"Answers will vary. [Residents of territories with nonvoting Delegates or Resident Commissioners may provide the name of that Delegate or Commissioner. Also acceptable is any statement that the territory has no (voting) representatives in Congress.]", cat:"American Government", starred:false, variable:true, local:true, district:true},
+  {id:30, q:"What is the name of the Speaker of the House of Representatives now?", a:["(Mike) Johnson"], official:"Visit uscis.gov/citizenship/testupdates for the name of the Speaker of the House of Representatives.", cat:"American Government", starred:true, variable:true, local:true},
   {id:31, q:"Who does a U.S. senator represent?", a:["Citizens of their state","People of their state"], cat:"American Government", starred:false},
   {id:32, q:"Who elects U.S. senators?", a:["Citizens from their state"], cat:"American Government", starred:false},
   {id:33, q:"Who does a member of the House of Representatives represent?", a:["Citizens in their (congressional) district","Citizens in their district","People from their (congressional) district","People in their district"], cat:"American Government", starred:false},
@@ -726,8 +728,8 @@ const QUESTIONS = [
   {id:35, q:"Some states have more representatives than other states. Why?", a:["(Because of) the state's population","(Because) they have more people","(Because) some states have more people"], cat:"American Government", starred:false},
   {id:36, q:"The President of the United States is elected for how many years?", a:["Four (4) years"], cat:"American Government", starred:true},
   {id:37, q:"The President of the United States can serve only two terms. Why?", a:["(Because of) the 22nd Amendment","To keep the president from becoming too powerful"], cat:"American Government", starred:false},
-  {id:38, q:"What is the name of the President of the United States now?", a:["Visit uscis.gov/citizenship/testupdates for the name of the President of the United States."], cat:"American Government", starred:true, variable:true},
-  {id:39, q:"What is the name of the Vice President of the United States now?", a:["Visit uscis.gov/citizenship/testupdates for the name of the Vice President of the United States."], cat:"American Government", starred:true, variable:true},
+  {id:38, q:"What is the name of the President of the United States now?", a:["(Donald) Trump","Donald J. Trump"], official:"Visit uscis.gov/citizenship/testupdates for the name of the President of the United States.", cat:"American Government", starred:true, variable:true, local:true},
+  {id:39, q:"What is the name of the Vice President of the United States now?", a:["(JD) Vance","J.D. Vance"], official:"Visit uscis.gov/citizenship/testupdates for the name of the Vice President of the United States.", cat:"American Government", starred:true, variable:true, local:true},
   {id:40, q:"If the president can no longer serve, who becomes president?", a:["The Vice President (of the United States)"], cat:"American Government", starred:false},
   {id:41, q:"Name one power of the president.", a:["Signs bills into law","Vetoes bills","Enforces laws","Commander in Chief (of the military)","Chief diplomat","Appoints federal judges"], cat:"American Government", starred:false},
   {id:42, q:"Who is Commander in Chief of the U.S. military?", a:["The President (of the United States)"], cat:"American Government", starred:false},
@@ -745,12 +747,12 @@ const QUESTIONS = [
   {id:54, q:"How many Supreme Court justices are usually needed to decide a case?", a:["Five (5)"], cat:"American Government", starred:false},
   {id:55, q:"How long do Supreme Court justices serve?", a:["(For) life","Lifetime appointment","(Until) retirement"], cat:"American Government", starred:false},
   {id:56, q:"Supreme Court justices serve for life. Why?", a:["To be independent (of politics)","To limit outside (political) influence"], cat:"American Government", starred:false},
-  {id:57, q:"Who is the Chief Justice of the United States now?", a:["Visit uscis.gov/citizenship/testupdates for the name of the Chief Justice of the United States."], cat:"American Government", starred:false, variable:true},
+  {id:57, q:"Who is the Chief Justice of the United States now?", a:["(John) Roberts","John G. Roberts, Jr."], official:"Visit uscis.gov/citizenship/testupdates for the name of the Chief Justice of the United States.", cat:"American Government", starred:false, variable:true, local:true},
   {id:58, q:"Name one power that is only for the federal government.", a:["Print paper money","Mint coins","Declare war","Create an army","Make treaties","Set foreign policy"], cat:"American Government", starred:false},
   {id:59, q:"Name one power that is only for the states.", a:["Provide schooling and education","Provide protection (police)","Provide safety (fire departments)","Give a driver's license","Approve zoning and land use"], cat:"American Government", starred:false},
   {id:60, q:"What is the purpose of the 10th Amendment?", a:["(It states that the) powers not given to the federal government belong to the states or to the people."], cat:"American Government", starred:false},
-  {id:61, q:"Who is the governor of your state now?", a:["Answers will vary.","[District of Columbia residents should answer that D.C. does not have a governor.]"], cat:"American Government", starred:true, variable:true},
-  {id:62, q:"What is the capital of your state?", a:["Answers will vary.","[District of Columbia residents should answer that D.C. is not a state and does not have a capital. Residents of U.S. territories should name the capital of the territory.]"], cat:"American Government", starred:false, variable:true},
+  {id:61, q:"Who is the governor of your state now?", a:["(Kathy) Hochul"], official:"Answers will vary. [District of Columbia residents should answer that D.C. does not have a governor.]", cat:"American Government", starred:true, variable:true, local:true},
+  {id:62, q:"What is the capital of your state?", a:["Albany"], official:"Answers will vary. [District of Columbia residents should answer that D.C. is not a state and does not have a capital. Residents of U.S. territories should name the capital of the territory.]", cat:"American Government", starred:false, variable:true, local:true},
 
   // ── American Government: Rights & Responsibilities ──
   {id:63, q:"There are four amendments to the U.S. Constitution about who can vote. Describe one of them.", a:["Citizens eighteen (18) and older (can vote).","You don't have to pay (a poll tax) to vote.","Any citizen can vote. (Women and men can vote.)","A male citizen of any race (can vote)."], cat:"American Government", starred:false},
@@ -927,6 +929,26 @@ function sample(arr, n) {
   return shuffle(arr).slice(0, n);
 }
 
+// Answers that depend on who currently holds office are pre-filled for New York.
+// They are NOT part of the fixed USCIS answer key and must be re-checked.
+const LOCAL_STATE = 'New York';
+const LOCAL_AS_OF = 'August 2026';
+
+function variableNoteHtml(q) {
+  if (!q.local) {
+    return '\u2139\ufe0f This answer changes with elections and appointments. Check ' +
+           '<strong>uscis.gov/citizenship/testupdates</strong> for the current official.';
+  }
+  const head = q.district
+    ? '\ud83d\udccd <strong>Depends on your district in ' + LOCAL_STATE + '.</strong> '
+    : '\ud83d\udccd <strong>Pre-filled for ' + LOCAL_STATE + '</strong>, current as of ' + LOCAL_AS_OF + '. ';
+  return head +
+    'Officials change with elections and appointments \u2014 confirm at ' +
+    '<strong>uscis.gov/citizenship/testupdates</strong> before your interview.' +
+    (q.official ? '<div style="margin-top:8px;padding-top:8px;border-top:1px solid #ffe082;opacity:0.85">' +
+      '<strong>USCIS answer key:</strong> ' + escHtml(q.official) + '</div>' : '');
+}
+
 function updateSessionStats() {
   document.getElementById('sessionStats').textContent =
     state.sessionCorrect + ' / ' + state.sessionTotal;
@@ -1030,6 +1052,7 @@ function revealAnswer() {
 
   const note = document.getElementById('variableNote');
   note.style.display = q.variable ? 'block' : 'none';
+  if (q.variable) note.innerHTML = variableNoteHtml(q);
 }
 
 function markCard(correct) {
@@ -1121,6 +1144,7 @@ function revealTestAnswer() {
   document.getElementById('testAnswerList').innerHTML = q.a.map(a => '<li>' + escHtml(a) + '</li>').join('');
   const note = document.getElementById('testVariableNote');
   note.style.display = q.variable ? 'block' : 'none';
+  if (q.variable) note.innerHTML = variableNoteHtml(q);
 }
 
 function markTest(correct) {
