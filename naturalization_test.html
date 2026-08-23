@@ -510,7 +510,7 @@ main { max-width: 720px; margin: 0 auto; padding: 20px 16px 40px; }
     <span class="header-flag">🇺🇸</span>
     <div class="header-title">
       <h1>US Citizenship Test Prep</h1>
-      <p>2025 USCIS Naturalization Test · <span style="color:var(--gold-light)">New York</span></p>
+      <p>2025 USCIS Naturalization Test · <span style="color:var(--gold-light)">New York &middot; NY-11</span></p>
     </div>
     <div class="session-stats" id="sessionStats">0 / 0</div>
   </div>
@@ -719,7 +719,7 @@ const QUESTIONS = [
   {id:26, q:"Why do U.S. representatives serve shorter terms than U.S. senators?", a:["To more closely follow public opinion"], cat:"American Government", starred:false},
   {id:27, q:"How many senators does each state have?", a:["Two (2)"], cat:"American Government", starred:false},
   {id:28, q:"Why does each state have two senators?", a:["Equal representation (for small states)","The Great Compromise (Connecticut Compromise)"], cat:"American Government", starred:false},
-  {id:29, q:"Name your U.S. representative.", a:["Depends on your congressional district, not just your state — New York has 26 of them.","Look up your district and representative at house.gov/representatives/find-your-representative"], official:"Answers will vary. [Residents of territories with nonvoting Delegates or Resident Commissioners may provide the name of that Delegate or Commissioner. Also acceptable is any statement that the territory has no (voting) representatives in Congress.]", cat:"American Government", starred:false, variable:true, local:true, district:true},
+  {id:29, q:"Name your U.S. representative.", a:["(Nicole) Malliotakis"], official:"Answers will vary. [Residents of territories with nonvoting Delegates or Resident Commissioners may provide the name of that Delegate or Commissioner. Also acceptable is any statement that the territory has no (voting) representatives in Congress.]", cat:"American Government", starred:false, variable:true, local:true, district:"NY-11"},
   {id:30, q:"What is the name of the Speaker of the House of Representatives now?", a:["(Mike) Johnson"], official:"Visit uscis.gov/citizenship/testupdates for the name of the Speaker of the House of Representatives.", cat:"American Government", starred:true, variable:true, local:true},
   {id:31, q:"Who does a U.S. senator represent?", a:["Citizens of their state","People of their state"], cat:"American Government", starred:false},
   {id:32, q:"Who elects U.S. senators?", a:["Citizens from their state"], cat:"American Government", starred:false},
@@ -933,6 +933,7 @@ function sample(arr, n) {
 // They are NOT part of the fixed USCIS answer key and must be re-checked.
 const LOCAL_STATE = 'New York';
 const LOCAL_AS_OF = 'August 2026';
+const LOCAL_ZIP = '11209';
 
 function variableNoteHtml(q) {
   if (!q.local) {
@@ -940,7 +941,9 @@ function variableNoteHtml(q) {
            '<strong>uscis.gov/citizenship/testupdates</strong> for the current official.';
   }
   const head = q.district
-    ? '\ud83d\udccd <strong>Depends on your district in ' + LOCAL_STATE + '.</strong> '
+    ? '\ud83d\udccd <strong>Pre-filled for district ' + q.district + '</strong> (ZIP ' + LOCAL_ZIP +
+      ', Bay Ridge, Brooklyn), current as of ' + LOCAL_AS_OF + '. A ZIP code can span more than one ' +
+      'district, so confirm yours at <strong>house.gov/representatives/find-your-representative</strong>. '
     : '\ud83d\udccd <strong>Pre-filled for ' + LOCAL_STATE + '</strong>, current as of ' + LOCAL_AS_OF + '. ';
   return head +
     'Officials change with elections and appointments \u2014 confirm at ' +
